@@ -1,6 +1,9 @@
 import { Frame } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export const Footer = () => {
+  const { t } = useTranslation();
+
   return (
     <footer className="py-8 bg-primary text-primary-foreground">
       <div className="container mx-auto px-4">
@@ -10,7 +13,7 @@ export const Footer = () => {
             <span className="font-serif text-lg">ArtVision</span>
           </div>
           <p className="text-sm text-primary-foreground/70">
-            Visualize the perfect artwork for your space
+            {t("footer.text")}
           </p>
         </div>
       </div>

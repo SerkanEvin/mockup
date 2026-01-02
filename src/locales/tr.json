@@ -1,0 +1,98 @@
+{
+    "header": {
+        "nav": {
+            "visualizer": "Görselleştirici",
+            "tips": "Fotoğraf İpuçları"
+        }
+    },
+    "hero": {
+        "title": "Sanatı Görselleştirin",
+        "subtitle": "Duvarlarınızda",
+        "description": "Odanızın fotoğrafını yükleyin, seçilmiş sanat eserlerinden seçim yapın ve satın almadan önce her bir parçanın alanınızda nasıl görüneceğini tam olarak görün.",
+        "cta": "Görselleştirmeye Başla"
+    },
+    "visualizer": {
+        "title": "Duvar Sanatı Görselleştirici",
+        "description": "Duvar fotoğrafınızı yükleyin, sanat eserinizi seçin ve gerçekçi bir önizleme görmek için çerçeve ve boyutu özelleştirin.",
+        "paintingInfo": {
+            "framed": "Çerçeveli",
+            "unframed": "Çerçevesiz"
+        }
+    },
+    "tips": {
+        "title": "Mükemmel Fotoğraf Nasıl Çekilir",
+        "description": "Seçtiğiniz sanat eserinin duvarınızda nasıl duracağına dair en doğru önizlemeyi almak için bu ipuçlarını izleyin.",
+        "items": {
+            "faceWall": {
+                "title": "Duvarı Tam Karşıdan Çekin",
+                "description": "Minimum bozulma için duvara dik durun. Açılı çekimlerden kaçının."
+            },
+            "distance": {
+                "title": "2-3 Metre Uzakta Durun",
+                "description": "En iyi sonuçlar için duvardan 2-3 metre (6-10 ft) uzakta durun. Bu, tüm duvarı doğru perspektifle yakalar."
+            },
+            "lighting": {
+                "title": "Doğal Işıklandırma",
+                "description": "Fotoğrafları gün ışığında çekin. Sert gölgelerden veya flaştan kaçının."
+            },
+            "reference": {
+                "title": "Referans Noktaları Ekleyin",
+                "description": "Boyutu ölçmek için mobilya veya nesneleri dahil edin. Küçük: 30-50cm, Orta: 50-80cm, Büyük: 80-120cm genişlik."
+            },
+            "steady": {
+                "title": "Sabit Tutun",
+                "description": "Telefonunuzu düz ve sabit tutun. Varsa ızgara çizgilerini kullanın."
+            },
+            "fullWall": {
+                "title": "Tam Duvar Bölümünü Yakalayın",
+                "description": "Resmin olmasını istediğiniz duvar alanının tamamının görünür olduğundan emin olun. Bağlam için biraz zemin ve tavan ekleyin."
+            }
+        },
+        "proTip": {
+            "title": "Profesyonel İpucu",
+            "description": "En iyi sonuçlar için aynı konumdan birden fazla fotoğraf çekin ve en net olanı seçin. Net, iyi aydınlatılmış bir fotoğraf, sanat eseri yerleşiminizin en gerçekçi önizlemesini verecektir."
+        }
+    },
+    "uploader": {
+        "title": "Duvar Fotoğrafınız",
+        "change": "Fotoğrafı Değiştir",
+        "upload": "Duvar Fotoğrafı Yükle",
+        "specs": "PNG, JPG maksimum 10MB"
+    },
+    "selector": {
+        "title": "Sanat Eseri Seç",
+        "paintings": {
+            "modernGeometry": "Modern Geometri",
+            "mistyMountains": "Sisli Dağlar",
+            "botanicalStudy": "Botanik Çalışma",
+            "boldExpression": "Cesur İfade",
+            "abstractCollection": "Soyut Koleksiyon",
+            "natureSeries": "Doğa Serisi",
+            "minimalistCollection": "Minimalist Koleksiyon",
+            "contemporaryArt": "Çağdaş Sanat"
+        }
+    },
+    "options": {
+        "frameTitle": "Çerçeve Seçenekleri",
+        "sizeTitle": "Boyut",
+        "withFrame": "Çerçeveli",
+        "withoutFrame": "Çerçevesiz",
+        "frameDesc": {
+            "with": "Klasik ahşap çerçeve",
+            "without": "Tuval sarma stili"
+        },
+        "sizes": {
+            "small": "Küçük",
+            "medium": "Orta",
+            "large": "Büyük"
+        }
+    },
+    "footer": {
+        "text": "Alanınız için mükemmel sanat eserini görselleştirin"
+    },
+    "notFound": {
+        "title": "404",
+        "message": "Sayfa Bulunamadı",
+        "home": "Ana Sayfaya Dön"
+    }
+}

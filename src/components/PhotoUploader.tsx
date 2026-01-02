@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 import { Upload, Camera } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface PhotoUploaderProps {
   onUpload: (imageUrl: string) => void;
@@ -7,6 +8,8 @@ interface PhotoUploaderProps {
 }
 
 export const PhotoUploader = ({ onUpload, hasImage }: PhotoUploaderProps) => {
+  const { t } = useTranslation();
+
   const handleFileChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const file = event.target.files?.[0];
@@ -24,13 +27,12 @@ export const PhotoUploader = ({ onUpload, hasImage }: PhotoUploaderProps) => {
 
   return (
     <div className="space-y-4">
-      <h3 className="font-serif text-lg font-medium text-foreground">Your Wall Photo</h3>
+      <h3 className="font-serif text-lg font-medium text-foreground">{t("uploader.title")}</h3>
       <label
-        className={`relative flex flex-col items-center justify-center p-6 border-2 border-dashed cursor-pointer transition-all duration-200 ${
-          hasImage
+        className={`relative flex flex-col items-center justify-center p-6 border-2 border-dashed cursor-pointer transition-all duration-200 ${hasImage
             ? "border-primary/50 bg-primary/5"
             : "border-border hover:border-primary/50 hover:bg-accent/50"
-        }`}
+          }`}
       >
         <input
           type="file"
@@ -42,13 +44,13 @@ export const PhotoUploader = ({ onUpload, hasImage }: PhotoUploaderProps) => {
           {hasImage ? (
             <>
               <Camera className="w-8 h-8 text-primary" />
-              <span className="text-sm font-medium text-foreground">Change Photo</span>
+              <span className="text-sm font-medium text-foreground">{t("uploader.change")}</span>
             </>
           ) : (
             <>
               <Upload className="w-8 h-8 text-muted-foreground" />
-              <span className="text-sm font-medium text-foreground">Upload Wall Photo</span>
-              <span className="text-xs text-muted-foreground">PNG, JPG up to 10MB</span>
+              <span className="text-sm font-medium text-foreground">{t("uploader.upload")}</span>
+              <span className="text-xs text-muted-foreground">{t("uploader.specs")}</span>
             </>
           )}
         </div>

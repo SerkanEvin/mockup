@@ -1,0 +1,98 @@
+{
+    "header": {
+        "nav": {
+            "visualizer": "Visualizer",
+            "tips": "Photo Tips"
+        }
+    },
+    "hero": {
+        "title": "Visualize Art",
+        "subtitle": "On Your Walls",
+        "description": "Upload a photo of your room, select from curated artworks, and see exactly how each piece will look in your space before you buy.",
+        "cta": "Start Visualizing"
+    },
+    "visualizer": {
+        "title": "Wall Art Visualizer",
+        "description": "Upload your wall photo, choose your artwork, and customize the frame and size to see a realistic preview.",
+        "paintingInfo": {
+            "framed": "Framed",
+            "unframed": "Unframed"
+        }
+    },
+    "tips": {
+        "title": "How to Take the Perfect Photo",
+        "description": "Follow these tips to get the most accurate preview of how your chosen artwork will look on your wall.",
+        "items": {
+            "faceWall": {
+                "title": "Face the Wall Directly",
+                "description": "Stand perpendicular to the wall for minimal distortion. Avoid angled shots."
+            },
+            "distance": {
+                "title": "Stand 6-10 Feet Away",
+                "description": "For best results, stand 2-3 meters (6-10 ft) from the wall. This captures the whole wall with proper perspective."
+            },
+            "lighting": {
+                "title": "Natural Lighting",
+                "description": "Take photos during daylight hours. Avoid harsh shadows or flash."
+            },
+            "reference": {
+                "title": "Include Reference Points",
+                "description": "Include furniture or objects to help gauge size. Small: 30-50cm, Medium: 50-80cm, Large: 80-120cm width."
+            },
+            "steady": {
+                "title": "Hold Steady",
+                "description": "Keep your phone level and steady. Use grid lines if available."
+            },
+            "fullWall": {
+                "title": "Capture Full Wall Section",
+                "description": "Ensure the entire wall area where you want the painting is visible. Include some floor and ceiling for context."
+            }
+        },
+        "proTip": {
+            "title": "Pro Tip",
+            "description": "For the best results, take multiple photos from the same position and choose the sharpest one. A clear, well-lit photo will give you the most realistic preview of your artwork placement."
+        }
+    },
+    "uploader": {
+        "title": "Your Wall Photo",
+        "change": "Change Photo",
+        "upload": "Upload Wall Photo",
+        "specs": "PNG, JPG up to 10MB"
+    },
+    "selector": {
+        "title": "Select Artwork",
+        "paintings": {
+            "modernGeometry": "Modern Geometry",
+            "mistyMountains": "Misty Mountains",
+            "botanicalStudy": "Botanical Study",
+            "boldExpression": "Bold Expression",
+            "abstractCollection": "Abstract Collection",
+            "natureSeries": "Nature Series",
+            "minimalistCollection": "Minimalist Collection",
+            "contemporaryArt": "Contemporary Art"
+        }
+    },
+    "options": {
+        "frameTitle": "Frame Options",
+        "sizeTitle": "Size",
+        "withFrame": "With Frame",
+        "withoutFrame": "Without Frame",
+        "frameDesc": {
+            "with": "Classic wooden frame",
+            "without": "Canvas wrap style"
+        },
+        "sizes": {
+            "small": "Small",
+            "medium": "Medium",
+            "large": "Large"
+        }
+    },
+    "footer": {
+        "text": "Visualize the perfect artwork for your space"
+    },
+    "notFound": {
+        "title": "404",
+        "message": "Page Not Found",
+        "home": "Return to Home"
+    }
+}

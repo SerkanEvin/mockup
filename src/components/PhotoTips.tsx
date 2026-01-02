@@ -1,51 +1,54 @@
 import { Camera, Sun, Ruler, Smartphone, Move, ZoomIn } from "lucide-react";
-
-const tips = [
-  {
-    icon: Camera,
-    title: "Face the Wall Directly",
-    description: "Stand perpendicular to the wall for minimal distortion. Avoid angled shots.",
-  },
-  {
-    icon: Move,
-    title: "Stand 6-10 Feet Away",
-    description: "For best results, stand 2-3 meters (6-10 ft) from the wall. This captures the whole wall with proper perspective.",
-  },
-  {
-    icon: Sun,
-    title: "Natural Lighting",
-    description: "Take photos during daylight hours. Avoid harsh shadows or flash.",
-  },
-  {
-    icon: Ruler,
-    title: "Include Reference Points",
-    description: "Include furniture or objects to help gauge size. Small: 30-50cm, Medium: 50-80cm, Large: 80-120cm width.",
-  },
-  {
-    icon: Smartphone,
-    title: "Hold Steady",
-    description: "Keep your phone level and steady. Use grid lines if available.",
-  },
-  {
-    icon: ZoomIn,
-    title: "Capture Full Wall Section",
-    description: "Ensure the entire wall area where you want the painting is visible. Include some floor and ceiling for context.",
-  },
-];
+import { useTranslation } from "react-i18next";
 
 export const PhotoTips = () => {
+  const { t } = useTranslation();
+
+  const tips = [
+    {
+      icon: Camera,
+      title: t("tips.items.faceWall.title"),
+      description: t("tips.items.faceWall.description"),
+    },
+    {
+      icon: Move,
+      title: t("tips.items.distance.title"),
+      description: t("tips.items.distance.description"),
+    },
+    {
+      icon: Sun,
+      title: t("tips.items.lighting.title"),
+      description: t("tips.items.lighting.description"),
+    },
+    {
+      icon: Ruler,
+      title: t("tips.items.reference.title"),
+      description: t("tips.items.reference.description"),
+    },
+    {
+      icon: Smartphone,
+      title: t("tips.items.steady.title"),
+      description: t("tips.items.steady.description"),
+    },
+    {
+      icon: ZoomIn,
+      title: t("tips.items.fullWall.title"),
+      description: t("tips.items.fullWall.description"),
+    },
+  ];
+
   return (
     <section className="py-16 bg-card">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="font-serif text-3xl md:text-4xl font-medium text-foreground mb-4">
-            How to Take the Perfect Photo
+            {t("tips.title")}
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Follow these tips to get the most accurate preview of how your chosen artwork will look on your wall.
+            {t("tips.description")}
           </p>
         </div>
-        
+
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {tips.map((tip, index) => (
             <div
@@ -69,10 +72,9 @@ export const PhotoTips = () => {
               <span className="text-xl font-bold">!</span>
             </div>
             <div>
-              <h4 className="font-medium text-foreground mb-1">Pro Tip</h4>
+              <h4 className="font-medium text-foreground mb-1">{t("tips.proTip.title")}</h4>
               <p className="text-sm text-muted-foreground">
-                For the best results, take multiple photos from the same position and choose the sharpest one. 
-                A clear, well-lit photo will give you the most realistic preview of your artwork placement.
+                {t("tips.proTip.description")}
               </p>
             </div>
           </div>
