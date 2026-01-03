@@ -28,7 +28,7 @@ export const WallPreview = ({ wallImage, paintingImage, hasFrame, size }: WallPr
   const [isOcclusionMode, setIsOcclusionMode] = useState(false);
   const [isErasing, setIsErasing] = useState(false);
   const [isPainting, setIsPainting] = useState(false);
-  
+
   // Perspective controls
   const [wallAngle, setWallAngle] = useState(0); // -30 to 30 degrees
   const [verticalTilt, setVerticalTilt] = useState(0); // -15 to 15 degrees
@@ -37,7 +37,7 @@ export const WallPreview = ({ wallImage, paintingImage, hasFrame, size }: WallPr
   // Detect wall angle using edge detection
   const detectWallAngle = useCallback(() => {
     if (!wallImage || !wallCanvasRef.current) return;
-    
+
     const canvas = wallCanvasRef.current;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
@@ -51,20 +51,20 @@ export const WallPreview = ({ wallImage, paintingImage, hasFrame, size }: WallPr
       canvas.width = img.width * scale;
       canvas.height = img.height * scale;
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-      
+
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
-      
+
       // Simple edge detection using Sobel operator
       const edges: { x: number; y: number; strength: number }[] = [];
-      
+
       for (let y = 1; y < canvas.height - 1; y++) {
         for (let x = 1; x < canvas.width - 1; x++) {
           const idx = (y * canvas.width + x) * 4;
-          
+
           // Get grayscale values
           const getGray = (i: number) => (data[i] + data[i + 1] + data[i + 2]) / 3;
-          
+
           const tl = getGray(((y - 1) * canvas.width + (x - 1)) * 4);
           const t = getGray(((y - 1) * canvas.width + x) * 4);
           const tr = getGray(((y - 1) * canvas.width + (x + 1)) * 4);
@@ -73,33 +73,33 @@ export const WallPreview = ({ wallImage, paintingImage, hasFrame, size }: WallPr
           const bl = getGray(((y + 1) * canvas.width + (x - 1)) * 4);
           const b = getGray(((y + 1) * canvas.width + x) * 4);
           const br = getGray(((y + 1) * canvas.width + (x + 1)) * 4);
-          
+
           // Sobel gradients
           const gx = -tl - 2 * l - bl + tr + 2 * r + br;
           const gy = -tl - 2 * t - tr + bl + 2 * b + br;
           const strength = Math.sqrt(gx * gx + gy * gy);
-          
+
           if (strength > 50) {
             const angle = Math.atan2(gy, gx) * (180 / Math.PI);
             edges.push({ x, y, strength });
           }
         }
       }
-      
+
       // Find dominant vertical lines (wall edges)
       // Look for strong vertical edges and estimate perspective
       const centerX = canvas.width / 2;
       let leftEdges = 0, rightEdges = 0;
-      
+
       edges.forEach(edge => {
         if (edge.x < centerX) leftEdges++;
         else rightEdges++;
       });
-      
+
       // Estimate angle based on edge distribution
       const edgeRatio = (rightEdges - leftEdges) / (rightEdges + leftEdges + 1);
       const estimated = edgeRatio * 15; // Scale to reasonable angle
-      
+
       setDetectedAngle(Math.round(estimated));
     };
     img.src = wallImage;
@@ -108,7 +108,7 @@ export const WallPreview = ({ wallImage, paintingImage, hasFrame, size }: WallPr
   // Sample wall lighting near painting position
   const sampleWallLighting = useCallback(() => {
     if (!wallImage || !wallCanvasRef.current) return;
-    
+
     const canvas = wallCanvasRef.current;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
@@ -119,14 +119,14 @@ export const WallPreview = ({ wallImage, paintingImage, hasFrame, size }: WallPr
       canvas.width = img.width;
       canvas.height = img.height;
       ctx.drawImage(img, 0, 0);
-      
+
       // Sample pixels around the painting position
       const sampleX = Math.floor((position.x / 100) * img.width);
       const sampleY = Math.floor((position.y / 100) * img.height);
       const sampleRadius = 50;
-      
+
       let totalR = 0, totalG = 0, totalB = 0, count = 0;
-      
+
       for (let dx = -sampleRadius; dx <= sampleRadius; dx += 10) {
         for (let dy = -sampleRadius; dy <= sampleRadius; dy += 10) {
           const x = Math.max(0, Math.min(img.width - 1, sampleX + dx));
@@ -138,17 +138,17 @@ export const WallPreview = ({ wallImage, paintingImage, hasFrame, size }: WallPr
           count++;
         }
       }
-      
+
       const avgR = totalR / count;
       const avgG = totalG / count;
       const avgB = totalB / count;
-      
+
       // Calculate brightness (more subtle: 0.85-1.1 range)
       const brightness = 0.85 + (((avgR + avgG + avgB) / 3) / 255) * 0.25;
-      
+
       // Calculate temperature (very subtle: -0.15 to 0.15)
       const temperature = ((avgR - avgB) / 255) * 0.15;
-      
+
       setLightingTint({ brightness, temperature });
     };
     img.src = wallImage;
@@ -183,10 +183,32 @@ export const WallPreview = ({ wallImage, paintingImage, hasFrame, size }: WallPr
     }
   };
 
+  const getPositionFromEvent = (clientX: number, clientY: number) => {
+    if (!containerRef.current) return null;
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = ((clientX - rect.left) / rect.width) * 100;
+    const y = ((clientY - rect.top) / rect.height) * 100;
+    return {
+      x: Math.max(10, Math.min(90, x)),
+      y: Math.max(10, Math.min(90, y)),
+    };
+  };
+
   const handleMouseDown = (e: React.MouseEvent) => {
     if (isOcclusionMode) {
       setIsPainting(true);
       paintMask(e);
+      return;
+    }
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (isOcclusionMode) {
+      setIsPainting(true);
+      const touch = e.touches[0];
+      paintMaskAt(touch.clientX, touch.clientY);
       return;
     }
     e.preventDefault();
@@ -198,17 +220,26 @@ export const WallPreview = ({ wallImage, paintingImage, hasFrame, size }: WallPr
       paintMask(e);
       return;
     }
-    
-    if (!isDragging || !containerRef.current) return;
-    
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
-    
-    setPosition({
-      x: Math.max(10, Math.min(90, x)),
-      y: Math.max(10, Math.min(90, y)),
-    });
+
+    if (!isDragging) return;
+
+    const pos = getPositionFromEvent(e.clientX, e.clientY);
+    if (pos) setPosition(pos);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (isOcclusionMode && isPainting) {
+      const touch = e.touches[0];
+      paintMaskAt(touch.clientX, touch.clientY);
+      return;
+    }
+
+    if (!isDragging) return;
+    e.preventDefault();
+
+    const touch = e.touches[0];
+    const pos = getPositionFromEvent(touch.clientX, touch.clientY);
+    if (pos) setPosition(pos);
   };
 
   const handleMouseUp = () => {
@@ -216,30 +247,38 @@ export const WallPreview = ({ wallImage, paintingImage, hasFrame, size }: WallPr
     setIsPainting(false);
   };
 
-  const paintMask = (e: React.MouseEvent) => {
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+    setIsPainting(false);
+  };
+
+  const paintMaskAt = (clientX: number, clientY: number) => {
     if (!maskCanvasRef.current || !containerRef.current || !wallImage) return;
-    
+
     const canvas = maskCanvasRef.current;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-    
+
     const rect = containerRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    
+    const x = clientX - rect.left;
+    const y = clientY - rect.top;
+
     ctx.globalCompositeOperation = isErasing ? 'destination-out' : 'source-over';
     ctx.beginPath();
-    ctx.arc(x, y, 10, 0, Math.PI * 2); // Smaller brush for detail
+    ctx.arc(x, y, 10, 0, Math.PI * 2);
     ctx.fillStyle = 'rgba(0, 0, 0, 1)';
     ctx.fill();
-    
-    // Update overlay canvas to show wall through mask
+
     updateOverlay();
+  };
+
+  const paintMask = (e: React.MouseEvent) => {
+    paintMaskAt(e.clientX, e.clientY);
   };
 
   // Draw wall image onto mask canvas where painted
   const [wallImageObj, setWallImageObj] = useState<HTMLImageElement | null>(null);
-  
+
   useEffect(() => {
     if (wallImage) {
       const img = new Image();
@@ -251,18 +290,18 @@ export const WallPreview = ({ wallImage, paintingImage, hasFrame, size }: WallPr
 
   const updateOverlay = useCallback(() => {
     if (!overlayCanvasRef.current || !maskCanvasRef.current || !wallImageObj) return;
-    
+
     const canvas = overlayCanvasRef.current;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-    
+
     canvas.width = containerSize.width;
     canvas.height = containerSize.height;
-    
+
     // Clear and draw wall image
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(wallImageObj, 0, 0, containerSize.width, containerSize.height);
-    
+
     // Use mask as clip - only show wall where mask is painted
     ctx.globalCompositeOperation = 'destination-in';
     ctx.drawImage(maskCanvasRef.current, 0, 0);
@@ -375,15 +414,18 @@ export const WallPreview = ({ wallImage, paintingImage, hasFrame, size }: WallPr
 
       <div
         ref={containerRef}
-        className="relative w-full aspect-[4/3] bg-muted overflow-hidden"
+        className="relative w-full aspect-[4/3] bg-muted overflow-hidden touch-none"
         style={{ cursor: isOcclusionMode ? 'crosshair' : 'default' }}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        onTouchCancel={handleTouchEnd}
       >
         {/* Hidden canvas for sampling wall colors */}
         <canvas ref={wallCanvasRef} className="hidden" />
-        
+
         {wallImage ? (
           <img
             src={wallImage}
@@ -397,7 +439,7 @@ export const WallPreview = ({ wallImage, paintingImage, hasFrame, size }: WallPr
             </p>
           </div>
         )}
-        
+
         {/* Painting with realistic compositing */}
         <div
           className="absolute transition-all duration-100"
@@ -412,6 +454,7 @@ export const WallPreview = ({ wallImage, paintingImage, hasFrame, size }: WallPr
             transformStyle: 'preserve-3d',
           }}
           onMouseDown={handleMouseDown}
+          onTouchStart={handleTouchStart}
         >
           {/* Shadow layer */}
           <div
@@ -423,7 +466,7 @@ export const WallPreview = ({ wallImage, paintingImage, hasFrame, size }: WallPr
               opacity: 0.5,
             }}
           />
-          
+
           {/* Side edges for 3D effect */}
           {showLeftEdge && (
             <div
@@ -447,7 +490,7 @@ export const WallPreview = ({ wallImage, paintingImage, hasFrame, size }: WallPr
               }}
             />
           )}
-          
+
           {/* Main painting with frame */}
           <div
             className={`w-full h-full relative ${hasFrame ? "p-2 bg-card" : ""}`}
@@ -461,7 +504,7 @@ export const WallPreview = ({ wallImage, paintingImage, hasFrame, size }: WallPr
             }}
           >
             {hasFrame && (
-              <div 
+              <div
                 className="absolute inset-0 pointer-events-none"
                 style={{
                   border: '8px solid',
@@ -481,34 +524,34 @@ export const WallPreview = ({ wallImage, paintingImage, hasFrame, size }: WallPr
             />
           </div>
         </div>
-        
+
         {/* Hidden mask canvas for tracking painted areas */}
         <canvas
           ref={maskCanvasRef}
           className="absolute inset-0 pointer-events-none"
-          style={{ 
+          style={{
             zIndex: 5,
             opacity: 0,
           }}
         />
-        
+
         {/* Overlay canvas - shows wall image where mask is painted */}
         <canvas
           ref={overlayCanvasRef}
           className="absolute inset-0 pointer-events-none"
           style={{ zIndex: 20 }}
         />
-        
+
         {/* Invisible painting area for occlusion mask interaction */}
         {isOcclusionMode && (
-          <div 
-            className="absolute inset-0" 
+          <div
+            className="absolute inset-0"
             style={{ zIndex: 15 }}
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
           />
         )}
-        
+
         <div className="absolute bottom-4 left-4 bg-card/90 backdrop-blur-sm px-3 py-1.5 text-xs text-card-foreground z-30">
           {isOcclusionMode ? "Paint to mask furniture" : "Drag to reposition"}
         </div>
