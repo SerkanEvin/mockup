@@ -5,11 +5,13 @@ import { OptionsPanel } from "./OptionsPanel";
 import { PhotoUploader } from "./PhotoUploader";
 import { useTranslation } from "react-i18next";
 
+import { WallArtSize } from "@/config/wallSizes";
+
 export const Visualizer = () => {
   const [wallImage, setWallImage] = useState<string | null>(null);
   const [selectedPainting, setSelectedPainting] = useState(0);
   const [hasFrame, setHasFrame] = useState(true);
-  const [size, setSize] = useState<"small" | "medium" | "large">("medium");
+  const [size, setSize] = useState<WallArtSize>("m");
   const { t } = useTranslation();
 
   return (

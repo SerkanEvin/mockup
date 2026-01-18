@@ -2,19 +2,14 @@ import { useRef, useEffect, useState, useCallback } from "react";
 import { Button } from "./ui/button";
 import { Slider } from "./ui/slider";
 import { Paintbrush, Eraser, RotateCcw, ScanLine } from "lucide-react";
+import { WallArtSize, WALL_ART_SIZES, REFERENCE_WALL_WIDTH_CM } from "@/config/wallSizes";
 
 interface WallPreviewProps {
   wallImage: string | null;
   paintingImage: string;
   hasFrame: boolean;
-  size: "small" | "medium" | "large";
+  size: WallArtSize;
 }
-
-const sizeScale = {
-  small: 0.15,
-  medium: 0.25,
-  large: 0.35,
-};
 
 export const WallPreview = ({ wallImage, paintingImage, hasFrame, size }: WallPreviewProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -320,8 +315,13 @@ export const WallPreview = ({ wallImage, paintingImage, hasFrame, size }: WallPr
     updateOverlay();
   };
 
-  const paintingWidth = containerSize.width * sizeScale[size];
-  const paintingHeight = paintingWidth * 1.33;
+  // Calculate painting dimensions based on cm sizes and reference wall width
+  const wallWidthInPixels = containerSize.width;
+  const pixelsPerCm = wallWidthInPixels / REFERENCE_WALL_WIDTH_CM;
+
+  const currentSizeConfig = WALL_ART_SIZES[size];
+  const paintingWidth = currentSizeConfig.width * pixelsPerCm;
+  const paintingHeight = currentSizeConfig.height * pixelsPerCm;
 
   // Calculate shadow offset based on painting position
   const shadowOffsetX = (position.x - 50) * 0.1 + wallAngle * 0.5;
