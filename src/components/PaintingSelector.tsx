@@ -10,8 +10,12 @@ interface PaintingSelectorProps {
   onSelect: (index: number) => void;
 }
 
+// Check for URL parameter to override first painting
+const urlParams = new URLSearchParams(window.location.search);
+const paintingParam = urlParams.get('painting');
+
 const paintings = [
-  { src: painting1, name: "Modern Geometry", artist: "Abstract Collection", key: "modernGeometry", artistKey: "abstractCollection" },
+  { src: paintingParam || painting1, name: "Modern Geometry", artist: "Abstract Collection", key: "modernGeometry", artistKey: "abstractCollection" },
   { src: painting2, name: "Misty Mountains", artist: "Nature Series", key: "mistyMountains", artistKey: "natureSeries" },
   { src: painting3, name: "Botanical Study", artist: "Minimalist Collection", key: "botanicalStudy", artistKey: "minimalistCollection" },
   { src: painting4, name: "Bold Expression", artist: "Contemporary Art", key: "boldExpression", artistKey: "contemporaryArt" },
@@ -29,8 +33,8 @@ export const PaintingSelector = ({ selectedPainting, onSelect }: PaintingSelecto
             key={index}
             onClick={() => onSelect(index)}
             className={`group relative aspect-[3/4] overflow-hidden transition-all duration-300 ${selectedPainting === index
-                ? "ring-2 ring-primary ring-offset-2 ring-offset-background"
-                : "hover:ring-1 hover:ring-border"
+              ? "ring-2 ring-primary ring-offset-2 ring-offset-background"
+              : "hover:ring-1 hover:ring-border"
               }`}
           >
             <img
